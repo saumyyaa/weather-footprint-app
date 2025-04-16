@@ -1,0 +1,11 @@
+
+{
+    "dashboard_title": "தண்ணீர் தடய பரிந்துரை",
+    "enter_city": "நகரம் உள்ளிடவும்",
+    "get_recommendation": "பரிந்துரை பெறுக",
+    "temperature": "வெப்பநிலை",
+    "rainfall": "மழை",
+    "recommendation": "பரிந்துரை",
+    "error_city_not_found": "நகரம் காணவில்லை அல்லது சேவையக பிழை."
+  }
+  

@@ -1,0 +1,10 @@
+{
+    "dashboard_title": "जल पदचिह्न सिफारिश",
+    "enter_city": "शहर दर्ज करें",
+    "get_recommendation": "सिफारिश प्राप्त करें",
+    "temperature": "तापमान",
+    "rainfall": "वर्षा",
+    "recommendation": "सिफारिश",
+    "error_city_not_found": "शहर नहीं मिला या सर्वर त्रुटि।"
+  }
+  

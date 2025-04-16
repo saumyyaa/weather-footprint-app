@@ -1,0 +1,11 @@
+
+{
+    "dashboard_title": "ನೀರು ಹಾದಿ ಶಿಫಾರಸು",
+    "enter_city": "ನಗರವನ್ನು ನಮೂದಿಸಿ",
+    "get_recommendation": "ಶಿಫಾರಸು ಪಡೆಯಿರಿ",
+    "temperature": "ತಾಪಮಾನ",
+    "rainfall": "ಮಳೆ",
+    "recommendation": "ಶಿಫಾರಸು",
+    "error_city_not_found": "ನಗರ ಕಂಡುಬಂದಿಲ್ಲ ಅಥವಾ ಸರ್ವರ್ ದೋಷ."
+  }
+  
