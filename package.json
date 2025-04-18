@@ -56,9 +56,6 @@
   "resolutions": {
     "typescript": "4.9.5"
   },
-  "jest": {
-    "moduleNameMapper": {
-      "^firebase/(.*)$": "<rootDir>/__mocks__/firebase/$1"
-    }
-  }
+  "jest": {}
+
 }
