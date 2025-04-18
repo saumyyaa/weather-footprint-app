@@ -11,38 +11,38 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: ⬇️ Checkout repository
-      uses: actions/checkout@v3
+      - name: ⬇️ Checkout repository
+        uses: actions/checkout@v3
 
-    - name: 🔧 Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: 18
+      - name: 🛠 Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
 
-    - name: 📦 Install dependencies (with legacy peer deps + polyfill)
-      run: |
-        npm install --legacy-peer-deps
-        npm install web-streams-polyfill
+      - name: 📦 Install dependencies (with legacy peer deps + polyfills)
+        run: |
+          npm install --legacy-peer-deps
+          npm install --save-dev web-streams-polyfill undici
 
-    - name: 🧪 Run tests
-      run: npm test -- --watchAll=false
+      - name: 🧪 Run tests
+        run: npm test -- --watchAll=false
 
-    - name: 🚀 Build project
-      run: npm run build
+      - name: 🚀 Build project
+        run: npm run build
 
-    - name: Set up SSH key for EC2
-      uses: webfactory/ssh-agent@v0.5.3
-      with:
-        ssh-private-key: ${{ secrets.EC2_KEY }}
+      - name: 🔐 Set up SSH key for EC2
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.EC2_KEY }}
 
-    - name: 🚀 Deploy to EC2
-      run: |
-        echo "Deploying to EC2 instance..."
-        ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
-          cd /home/ubuntu/DevOps-Project || exit 1
-          git pull origin main || exit 1
-          source venv/bin/activate || exit 1
-          pip install -r requirements.txt || exit 1
-          nohup python app.py &  # Adjust this if your backend server is different
-          exit 0
-        EOF
+      - name: 🚀 Deploy to EC2
+        run: |
+          echo "Deploying to EC2 instance..."
+          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
+            cd /home/ubuntu/DevOps-Project || exit 1
+            git pull origin main || exit 1
+            source venv/bin/activate || exit 1
+            pip install -r requirements.txt || exit 1
+            nohup python app.py &  # Change this if your start command is different
+            exit 0
+          EOF
