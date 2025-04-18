@@ -1,9 +1,18 @@
 // src/setupTests.js
 import '@testing-library/jest-dom';
 // src/setupTests.js
-import 'jest-environment-jsdom';
 
+
+import '@testing-library/jest-dom';
+
+// Polyfill ReadableStream for Firebase
 global.ReadableStream = require('web-streams-polyfill/ponyfill').ReadableStream;
+
+// Polyfill for TextEncoder/TextDecoder if needed by Firebase/auth
+import { TextEncoder, TextDecoder } from 'util';
+global.TextEncoder = TextEncoder;
+global.TextDecoder = TextDecoder;
+
 
 
 // Mock TextEncoder/TextDecoder for Firebase
