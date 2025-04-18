@@ -44,9 +44,6 @@
   },
   "resolutions": {
     "typescript": "4.9.5"
-  },
-  "jest": {
-  "setupFilesAfterEnv": ["<rootDir>/src/setupTests.js"]
-}
+  }
 
 }
