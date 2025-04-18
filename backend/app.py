@@ -3,12 +3,7 @@ from flask_cors import CORS
 import requests
 from twilio.rest import Client
 import os
-from dotenv import load_dotenv
 
-load_dotenv()
-
-account_sid = os.getenv("TWILIO_ACCOUNT_SID")
-auth_token = os.getenv("TWILIO_AUTH_TOKEN")
 
 app = Flask(__name__)
 CORS(app)
@@ -16,6 +11,8 @@ CORS(app)
 API_KEY = "e472b46560785b3f0db3095614e97a6a"
 
 # Twilio Configuration
+TWILIO_ACCOUNT_SID = "AC7e8a84db26bc8832a14c8a4153801939"
+TWILIO_AUTH_TOKEN = "bd855bb629fd1146a1cd8849bf91ada0"
 
 TWILIO_PHONE_NUMBER = "+19472176585"
 
