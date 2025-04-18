@@ -1,5 +1,10 @@
 // src/setupTests.js
 import '@testing-library/jest-dom';
+// src/setupTests.js
+import 'jest-environment-jsdom';
+
+global.ReadableStream = require('web-streams-polyfill/ponyfill').ReadableStream;
+
 
 // Mock TextEncoder/TextDecoder for Firebase
 if (typeof TextEncoder === 'undefined') {
