@@ -1,23 +1,13 @@
 import '@testing-library/jest-dom';
 
-try {
-  // ✅ Polyfill ReadableStream for Firebase in Node.js
-  if (typeof global.ReadableStream === 'undefined') {
-    const { ReadableStream } = require('web-streams-polyfill/ponyfill');
-    global.ReadableStream = ReadableStream;
-  }
-
-  // ✅ Polyfill TextEncoder/TextDecoder for Node <18
-  if (typeof global.TextEncoder === 'undefined' || typeof global.TextDecoder === 'undefined') {
-    const { TextEncoder, TextDecoder } = require('util');
-    global.TextEncoder = TextEncoder;
-    global.TextDecoder = TextDecoder;
-  }
-} catch (err) {
-  console.warn('⚠️ Polyfill error in setupTests.js:', err);
+// ✅ Polyfill for TextEncoder/TextDecoder (used by Firebase via Undici)
+if (typeof global.TextEncoder === 'undefined') {
+  const { TextEncoder, TextDecoder } = require('util');
+  global.TextEncoder = TextEncoder;
+  global.TextDecoder = TextDecoder;
 }
 
-// ✅ Mock matchMedia for Chart.js, MUI, etc.
+// ✅ Mock matchMedia (used by MUI/Chart.js)
 if (typeof window !== 'undefined' && typeof window.matchMedia !== 'function') {
   Object.defineProperty(window, 'matchMedia', {
     writable: true,
