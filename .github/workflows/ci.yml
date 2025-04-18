@@ -2,33 +2,45 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [main]
+    branches: [main]  # Trigger only on main branch
   pull_request:
     branches: [main]
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: ⬇️ Checkout repository
-        uses: actions/checkout@v3
+    - name: ⬇️ Checkout repository
+      uses: actions/checkout@v3
 
-      - name: 🔧 Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
+    - name: 🔧 Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
 
-      - name: 📦 Install dependencies (with legacy peer deps)
-        run: npm install --legacy-peer-deps
+    - name: 📦 Install dependencies (with legacy peer deps)
+      run: npm install --legacy-peer-deps
 
-      - name: 🧹 Lint code (optional, skip if you don't use linting)
-        run: echo "Skipping lint step" # Replace with `npm run lint` if you use it
+    - name: ✅ Run tests
+      run: npm test -- --watchAll=false
 
-      - name: ✅ Run tests
-        run: npm test -- --watchAll=false
+    - name: 🚀 Build the React app
+      run: npm run build
 
-      - name: 🚀 Build project
-        run: npm run build
-       
+    - name: 🔐 Set up SSH agent
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.EC2_KEY }}
 
+    - name: 📂 Deploy to EC2 instance
+      run: |
+        echo "🚀 Deploying to EC2..."
+        ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
+          cd /home/ubuntu/weather-footprint-app || exit 1
+          git pull origin main || exit 1
+          npm install --legacy-peer-deps || exit 1
+          npm run build || exit 1
+          pm2 restart all || pm2 start npm --name "weather-app" -- start
+          exit 0
+        EOF
