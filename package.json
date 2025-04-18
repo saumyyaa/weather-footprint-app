@@ -59,8 +59,6 @@
   "jest": {
     "moduleNameMapper": {
       "^firebase/(.*)$": "<rootDir>/__mocks__/firebase/$1"
-    },
-   
-    "testEnvironment": "jsdom"
+    }
   }
 }
