@@ -1,50 +1,31 @@
-// src/setupTests.js
 import '@testing-library/jest-dom';
 
-// Mock browser APIs needed by Firebase
-class MockReadableStream {
-  constructor() {}
-  getReader() { return { read: () => Promise.resolve({ done: true }) }; }
-  pipeThrough() { return new MockReadableStream(); }
+// ✅ Polyfill TextEncoder/TextDecoder (used by Firebase)
+if (typeof global.TextEncoder === 'undefined') {
+  const { TextEncoder, TextDecoder } = require('util');
+  global.TextEncoder = TextEncoder;
+  global.TextDecoder = TextDecoder;
 }
 
-// Add TextEncoder/TextDecoder polyfills
-if (typeof TextEncoder === 'undefined') {
-  global.TextEncoder = require('util').TextEncoder;
-  global.TextDecoder = require('util').TextDecoder;
+// ✅ Polyfill ReadableStream (used by Firebase in Node.js envs)
+try {
+  if (typeof global.ReadableStream === 'undefined') {
+    global.ReadableStream = require('web-streams-polyfill').ReadableStream;
+  }
+} catch (err) {
+  console.warn('⚠️ Could not polyfill ReadableStream:', err);
 }
 
-// Add ReadableStream polyfill
-if (typeof ReadableStream === 'undefined') {
-  global.ReadableStream = MockReadableStream;
-}
-
-// Mock Firebase completely
-jest.mock('firebase/auth', () => ({
-  getAuth: jest.fn(),
-  signInWithEmailAndPassword: jest.fn(),
-  createUserWithEmailAndPassword: jest.fn(),
-  signOut: jest.fn(),
-  onAuthStateChanged: jest.fn()
-}));
-
-jest.mock('../src/firebaseConfig', () => ({
-  auth: {},
-  app: {},
-  db: {}
-}));
-
-// Mock window.matchMedia
-Object.defineProperty(window, 'matchMedia', {
-  writable: true,
-  value: jest.fn().mockImplementation(query => ({
+// ✅ Mock window.matchMedia (used by MUI/Chart.js in tests)
+if (typeof window !== 'undefined' && typeof window.matchMedia !== 'function') {
+  window.matchMedia = jest.fn().mockImplementation(query => ({
     matches: false,
     media: query,
     onchange: null,
-    addListener: jest.fn(),
-    removeListener: jest.fn(),
+    addListener: jest.fn(), // deprecated
+    removeListener: jest.fn(), // deprecated
     addEventListener: jest.fn(),
     removeEventListener: jest.fn(),
     dispatchEvent: jest.fn(),
-  })),
-});
+  }));
+}
